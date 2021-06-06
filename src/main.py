@@ -4,9 +4,11 @@
 # TRANSPILE
 import logging
 
-from src import DefaultSettings, logger, Settings, Validator
+from src.util.validator import Validator
+from src.util.settings import DefaultSettings, Settings
 
 logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     try:
@@ -14,8 +16,8 @@ if __name__ == "__main__":
         Settings.load_settings()
     except FileNotFoundError:
         logger.info(
-            f'File "{DefaultSettings.SETTINGS_FILE.value}" found\n'
-            f'Creating "{DefaultSettings.SETTINGS_FILE.value}"'
+            f'File "{Settings.SETTINGS_FILE.value}" found\n'
+            f'Creating "{Settings.SETTINGS_FILE.value}"'
         )
         Settings.create_settings()
         Settings.load_settings()
