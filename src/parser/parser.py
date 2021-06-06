@@ -1,23 +1,37 @@
 import abc
-import os
-from typing import Type
-
-from src.util import Settings
+import logging
+from typing import Optional
 
 
 class ParserError(Exception):
-    PARSER_DOES_NOT_EXIST = f"Parser {Settings.PARSER} does not exist"
+    PARSER_DOES_NOT_EXIST = "Parser {parser} does not exist"
 
 
 class Parser(abc.ABC):
-    ParserError = ParserError
     name: str
 
-    def __init__(self, target_dir: str):
-        self.target_dir: str = target_dir
+    def __init__(self, target_dir: str, settings: Optional[dict]):
+        self.target_dir = target_dir
+        self.settings = settings
+        self.logger = logging.getLogger(self.name)
 
-    @classmethod
-    def get_parser(cls):
-        for parser in cls.__subclasses__():
-            if parser.name == Settings.PARSER:
-                return parser(Settings.TARGET_DIRECTORY)
+        self.validate()
+
+    def validate(self):
+        if self.name is None:
+            raise NotImplementedError("Name must be set on parser")
+
+    def parse(self):
+        # TODO: type
+        self.logger.info(f"Parsing {self.target_dir}")
+        collection = self._run()
+        self.logger.info(f"Complete")
+        return collection
+
+
+    @abc.abstractmethod
+    def _run(self):
+        """
+        Method that creates a collection from project files
+        """
+        pass

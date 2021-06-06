@@ -14,12 +14,16 @@ class DefaultSettings(Enum):
     PARSER = "django"
     SETTINGS_FILE = "./settings.yml"
     TARGET_DIRECTORY = ""
+    PARSER_SETTINGS = {
+        "django": {"project_app": "budget", "settings_module": "settings"}
+    }
 
 
 class Settings:
     TARGET_DIRECTORY = sys.argv[1]
     SETTINGS_FILE = "./settings.yml"
     PARSER = "django"
+    PARSER_SETTINGS = {}
 
     @classmethod
     def load_settings(

@@ -4,6 +4,8 @@
 # TRANSPILE
 import logging
 
+from src.parser import Parser
+from src.util import get_parser
 from src.util.validator import Validator
 from src.util.settings import DefaultSettings, Settings
 
@@ -16,10 +18,12 @@ if __name__ == "__main__":
         Settings.load_settings()
     except FileNotFoundError:
         logger.info(
-            f'File "{Settings.SETTINGS_FILE.value}" found\n'
-            f'Creating "{Settings.SETTINGS_FILE.value}"'
+            f'File "{Settings.SETTINGS_FILE}" not found\n'
+            f'Creating "{Settings.SETTINGS_FILE}"'
         )
         Settings.create_settings()
         Settings.load_settings()
 
     Validator.validate()
+    parser = get_parser()
+    parser.parse()
