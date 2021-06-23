@@ -31,3 +31,9 @@ def get_parser():
             )
 
     raise ParserError(ParserError.PARSER_DOES_NOT_EXIST.format(parser=Settings.PARSER))
+
+
+def print_obj(obj):
+    for x, y in obj.__dict__.items():
+        if not x.startswith('__'):
+            print(x, y)

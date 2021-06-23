@@ -28,7 +28,6 @@ class Parser(abc.ABC):
         self.logger.info(f"Complete")
         return collection
 
-
     @abc.abstractmethod
     def _run(self):
         """

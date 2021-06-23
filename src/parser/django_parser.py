@@ -1,10 +1,13 @@
 import os
 import sys
+from types import ModuleType
 from typing import Optional
 
 from django.core.wsgi import get_wsgi_application
+from django.urls import URLResolver
 
 from .parser import Parser, ParserError
+from ..util import print_obj
 
 
 class DjangoParserError(ParserError):
@@ -26,7 +29,13 @@ class DjangoParser(Parser):
 
     def _run(self):
         root_url = __import__(self.project_settings.ROOT_URLCONF)
-        print(root_url.urls.urlpatterns)
+        url_patterns = []
+        for url_resolver in root_url.urls.urlpatterns:
+            print(url_resolver.pattern._route)
+            url_patterns += url_resolver.url_patterns
+
+        print("num", len(url_patterns))
+        print(url_patterns)
 
     def _setup_django(self):
         os.environ.setdefault(
